@@ -18,20 +18,13 @@ def encrypt_image(image, secret_key):
     for idx in range(2):
         # Josephus Parameter Generation, Mapping & Scrambling
         sc_val = key.generate_scrambling_values(JPDF_values[f"g{idx}"], M, N)
-        # print(f"sc_val{idx}:\n", sc_val)
         mapping = JS_Mapping.generate_mapping(M, N, MP=sc_val["MP"], NP=sc_val["NP"], MStep=sc_val["MStep"], NStep=sc_val["NStep"])
         scrambled_image = JS_Scramble.scramble_image(mapping, input_image)
-        # print(f"SC{idx}:\n", np.array(scrambled_image))
-        # scimage = Image.fromarray(np.array(scrambled_image).astype(np.uint8))
-        # scimage.save('./Images/scimage.png')
         
         # Chaotic Mapping - Parameter Generation, Row Switching & Column Switching
         cm_val = key.generate_chaotic_mapping_values(JPDF_values[f"d{idx}"])
-        # print(f"cm_val{idx}:\n", cm_val)
         rimage = row_cm.switch_rows(cm_val["mu"], cm_val["x"], np.array(scrambled_image))
-        # print(f"RS{idx}:\n", np.array(rimage))
         cimage = col_cm.switch_columns(cm_val["mu"], cm_val["x"], rimage)
-        # print(f"CS{idx}:\n", cimage)
         
         input_image = cimage
     
@@ -48,18 +41,11 @@ def decrypt_image(eimage:np.ndarray, secret_key):
     input_image = eimage.copy()
     for idx in range(1, -1, -1):
         # Chaotic Mapping - Parameter Generation, Row Deswitching & Column Deswitching
-        # x= 0.19870228
-        # mu=3.99999999
-        # res = row_cm.deswitch_rows(mu, x, eimage)
-        # Chaotic Mapping - Parameter Generation, Row Deswitching & Column Deswitching
         cm_val = key.generate_chaotic_mapping_values(JPDF_values[f"d{idx}"])
-        # print(f"Dcm_val{idx}:\n", cm_val)
         cimage = col_cm.deswitch_columns(cm_val["mu"], cm_val["x"], input_image)
-        # print(f"DCS{idx}:\n", cimage)
         res = row_cm.deswitch_rows(cm_val["mu"], cm_val["x"], cimage)
-        # print(f"DRS{idx}:\n", np.array(rimage))
         
-        
+        # Josephus Parameter Generation, Mapping & De-Scrambling
         sc_val = key.generate_scrambling_values(JPDF_values[f"g{idx}"], M, N)
         mapping = JS_Mapping.generate_mapping(M, N, MP=sc_val["MP"], NP=sc_val["NP"], MStep=sc_val["MStep"], NStep=sc_val["NStep"])
         scrambled_image = JS_Scramble.descramble_image(mapping, res)
@@ -73,8 +59,6 @@ if __name__ == "__main__":
     im = Image.open("./Images/test.jpg")
     im_mode = im.mode
     image = np.array(im)
-    # im_mode = "L"
-    # image = np.array([[91,160,117,112], [135,124,175,126], [239, 234, 249, 224], [ 21,  28,  27,  22], [91,160,117,112], [135,124,175,126]])
     
     print("\n########################\n")
     print("Original IMage:\n", image)
@@ -100,8 +84,7 @@ if __name__ == "__main__":
     eim = Image.open("./Images/eimage.png")
     eim_mode = eim.mode
     eim_mat = np.array(eim)
-    # eim_mode = "L"
-    # eim_mat = np.array(enc_image)
+    
     if eim_mode == "L":
         dec_image = decrypt_image(eim_mat, secret_key)
         dec_image = np.array(dec_image)

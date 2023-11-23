@@ -33,8 +33,8 @@ def generate_JPDF_parameters(subkey):
 
 def generate_scrambling_values(bin_data, M, N):
     sc_val = dict()
-    sc_val["MP"] = (int(bin_data[:8], 2)%M)+1
-    sc_val["NP"] = (int(bin_data[8:16], 2)%N)+1
+    sc_val["MP"] = (int(bin_data[:8], 2)%M)
+    sc_val["NP"] = (int(bin_data[8:16], 2)%N)
     sc_val["MStep"] = int(bin_data[16:20], 2)
     sc_val["NStep"] = int(bin_data[20:], 2)
     return sc_val
@@ -49,8 +49,3 @@ def generate_chaotic_mapping_values(bin_data):
         "mu": 3.99999999
     }
     
-
-# if __name__ == "__main__":
-#     SECRET_KEY = "T3RTqXCNwUaIraqIbixsvzYb1W340ZXK"
-#     res_dict = generate_JPDF_parameters(SECRET_KEY)
-#     print(res_dict)
