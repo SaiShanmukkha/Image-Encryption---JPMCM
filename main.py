@@ -56,45 +56,72 @@ def decrypt_image(eimage:np.ndarray, secret_key):
     
 if __name__ == "__main__":
     secret_key = "T3RTqXCNwUaIraqIbixsvzYb1W340ZXK"
-    im = Image.open("./Images/test.jpg")
-    im_mode = im.mode
+    # im = Image.open("./Images/color.jpg")
+    im = np.array([[1,2,3,4], [5,6,7,8], [9,10,11,12],[13,14,15,16]])
+    im_mode = "L"
+    # im_mode = im.mode
+    # im = im.convert("L")
     image = np.array(im)
-    
+    print("IMage Mode =", im_mode)
+    print("IMage Shape = ", image.shape)
     print("\n########################\n")
     print("Original IMage:\n", image)
     print("\n########################\n")
     
     
-    if im_mode == "L":
+    if im_mode in ["L", "P"]:
         enc_image = encrypt_image(image, secret_key)
         enc_image = np.array(enc_image)
-        eimage = Image.fromarray(enc_image.astype(np.uint8))
-        eimage.save('./Images/eimage.png')
+        # eimage = Image.fromarray(enc_image.astype(np.uint8), mode=im_mode)
     elif im_mode == "RGB":
-        pass
+        enc_image_array = []
+        for idx in range(3):
+            unc_img = image[:, :, idx]
+            print(unc_img)
+            print("Shape = ", unc_img.shape)
+            enc_image_mat = encrypt_image(unc_img, secret_key)
+            enc_image_array.append(enc_image_mat)
+        enc_image = np.stack(enc_image_array, axis=-1)
+        eimage = Image.fromarray(enc_image.astype(np.uint8), mode="RGB")
     else:
-        raise Exception("Unsupported Image Type. Currently supported Only Grayscale or RGB.")
+        raise Exception(f"${im_mode} Unsupported Image Type. Currently supported Only Grayscale or RGB.")
     
+    
+    # eimage.save('./Images/eimage.png')
     
     print("\n########################\n")
     print("Encrypted Image:\n", enc_image)
     print("\n########################\n")
     
     secret_key = "T3RTqXCNwUaIraqIbixsvzYb1W340ZXK"
-    eim = Image.open("./Images/eimage.png")
-    eim_mode = eim.mode
+    # eim = Image.open("./Images/eimage.png")
+    eim = enc_image
+    # eim_mode = eim.mode
+    eim_mode = "L"
     eim_mat = np.array(eim)
     
-    if eim_mode == "L":
+    
+    if eim_mode in ["L", "P"]:
         dec_image = decrypt_image(eim_mat, secret_key)
         dec_image = np.array(dec_image)
-        deimage = Image.fromarray(dec_image.astype(np.uint8))
-        deimage.save('./Images/dimage.png')
+        # deimage = Image.fromarray(dec_image.astype(np.uint8), mode=im_mode)
     elif eim_mode == "RGB":
-        pass
+        dec_image_array = []
+        for idx in range(3):
+            dec_imgs = eim_mat[:, :, idx]
+            print("D Image:\n", dec_imgs)
+            print("Shape = ",dec_imgs.shape)
+            dec_image_mat = decrypt_image(dec_imgs, secret_key)
+            dec_image_array.append(enc_image_mat)
+        dec_image = np.stack(dec_image_array, axis=-1)
+        print(dec_image.shape)
+        deimage = Image.fromarray(dec_image.astype(np.uint8), mode="RGB")
     else:
-        raise Exception("Unsupported Image Type. Currently supported Only Grayscale or RGB.")
-        
+        raise Exception(f"{eim_mode} Unsupported Image Type. Currently supported Only Grayscale or RGB.")
+    
+    # deimage.save('./Images/dimage.png')
+
     print("\n########################\n")
     print("Decrypted Image:\n", dec_image)
     print("\n########################\n")
+    print(np.array_equal(image, dec_image))
