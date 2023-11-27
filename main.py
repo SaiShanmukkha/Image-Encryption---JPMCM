@@ -5,9 +5,11 @@ from Lib import JS_Mapping
 from Lib import JS_Scramble
 from Lib import row_cm
 from Lib import col_cm
+import time
 
 def encrypt_image(image, secret_key):
-    
+    # Measure the start time
+    start_time = time.time()
     # Handle Key - Generate Parameters
     JPDF_values = key.generate_JPDF_parameters(secret_key)
     M = len(image)
@@ -35,6 +37,16 @@ def encrypt_image(image, secret_key):
         
         input_image = cimage
     
+    # Measure the end time
+    end_time = time.time()
+
+    # Calculate encryption speed
+    elapsed_time = end_time - start_time
+    encryption_speed = (M*N) / (1024 * 1024) / max(1e-6, elapsed_time)  # Avoid division by zero
+
+    print(f"Elapsed Time: {elapsed_time:.6f} seconds")
+    print(f"Encryption Speed: {encryption_speed:.2f} MB/s")
+
     return input_image
 
 def decrypt_image(eimage:np.ndarray, secret_key):
