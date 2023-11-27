@@ -4,34 +4,6 @@ from PIL import Image
 
 def logistic_chaotic_mapping(mu, x):
     return mu * x * (1-x)
-    
-def switch_rows(mu, x, image:np.ndarray):
-    M, N = image.shape
-
-    for i in range(M):
-        x = logistic_chaotic_mapping(mu,x)
-        j = math.floor(x * M)
-        k1 = math.ceil((x * 1000)%256)
-        k2 = math.ceil((x * 10000)%256)
-        
-        if j < i:
-            j = i
-        
-        if i != j:
-            for k in range(N):
-                image[i][k] = image[i][k] ^ k1
-            for k in range(N):
-                image[j][k] = image[j][k] ^ k2
-        else:
-            for k in range(N):
-                image[i][k] = image[i][k] ^ k1
-        
-        image[[i, j], :] = image[[j, i], :] 
-        
-        s = sum(image[i])/1000
-        x, tmp = math.modf(x+s)
-
-    return image
 
 def deswitch_rows(mu, x, rimage):
     M = len(rimage)
@@ -69,4 +41,32 @@ def deswitch_rows(mu, x, rimage):
     return rimage
 
     
-    
+def switch_rows(mu, x, image:np.ndarray):
+    M, N = image.shape
+
+    for i in range(M):
+        x = logistic_chaotic_mapping(mu,x)
+        j = math.floor(x * M)
+        k1 = math.ceil((x * 1000)%256)
+        k2 = math.ceil((x * 10000)%256)
+        
+        # TODO: Check Condition
+        if j < i:
+            j = i
+        
+        if i != j:
+            for k in range(N):
+                image[i][k] = image[i][k] ^ k1
+            for k in range(N):
+                image[j][k] = image[j][k] ^ k2
+        else:
+            for k in range(N):
+                image[i][k] = image[i][k] ^ k1
+        
+        image[[i, j], :] = image[[j, i], :] 
+        
+        s = sum(image[i])/1000
+        x, tmp = math.modf(x+s)
+
+    return image
+
