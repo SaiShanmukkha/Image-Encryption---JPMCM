@@ -27,10 +27,17 @@ This GitHub project implements three image encryption algorithms inspired by res
 - Shows resilience against differential attacks, statistical analysis, known-plaintext, and chosen-plaintext attacks.
 - [Read More](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8301018)
 
-## Usage
-1. Clone the repository: `git clone https://github.com/SaiShanmukkha/Image-Encryption---JPMCM.git`
-2. Change directory to Image-Encryption--JPMCM
-3. Run main.py using the command: python main.py
+
+## Project Setup and Execution Guide
+
+Follow these steps to set up and run the project:
+
+1. **Clone the GitHub Repository** : git clone https://github.com/SaiShanmukkha/Image-Encryption---JPMCM.git
+2. **Navigate to the Project Directory** : cd [name of the folder]. Open Terminal in the Project Folder and Ensure that you're in the correct directory.
+3. **Install Required Dependencies**: Make sure you have Python 3.x installed in the system and run "pip install -r requirements.txt"
+4. **Configure the Script** : Open main.py in a text editor and Change the input image path to your desired file.
+5. **Run the Script** : python main.py
+6. **Navigate to the Images folder**: Find the encrypted image "eimage.png" and decrypted image "dimage.png".
 
 
 ## Contributions
