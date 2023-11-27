@@ -47,7 +47,7 @@ This project is licensed under the [Apache License](LICENSE.md). Feel free to us
 
 ## Contact
 For inquiries, issues, or collaboration, please contact the project maintainers:
-- Sai Shanmukh Surapaneni (siv30@txstate.edu)
+- Sai Shanmukkha Surapaneni (siv30@txstate.edu)
 - Ganesh Gaiy (ane80@txstate.edu)
 - Kalyan Chittipeddi(jnw96@txstate.edu)
-- Raju Kumar Maddala (vks20@txstate.edu)
+- Raju Kumar Madala (vks20@txstate.edu)
