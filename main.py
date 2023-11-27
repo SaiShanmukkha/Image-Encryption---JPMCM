@@ -122,6 +122,9 @@ if __name__ == "__main__":
         decrypted_image = process_color_image(encrypted_image, secret_key, encryptFlag=False)
         decrypted_image.save('./Images/dimage.png')
 
+    else:
+        raise Exception("Unsupported Image Type.")
+
     
 
     
