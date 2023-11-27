@@ -56,9 +56,4 @@ def generate_mapping(M, N, MP, NP, MStep, NStep):
     result = generate_index_matrix(ri, col_lst, M, N)
     return result
 
-# if __name__ == "__main__":
-#     g = "011111101101010100110100"
-#     d = "110100100111101000010001011011110000001101011000010110110000111110000110001110010001010101111100"
-#     result = generate_mapping(M=3, N=4, MStep=1, MP=3, NStep=2, NP=2)
-#     print(result)
     
