@@ -10,11 +10,7 @@ def encryption_channel(channel_data, secret_key):
     M, N = channel_data.shape
     JPDF_values = key.generate_JPDF_parameters(secret_key)
     input_data = channel_data
-    cm_val = { 
-        "x" : 0.19870228,
-        "mu": 3.99999999
-        }
-
+    
     for idx in range(2):
         # Josephus Scrambling
         sc_val = key.generate_scrambling_values(JPDF_values[f"g{idx}"], M, N)
@@ -22,6 +18,7 @@ def encryption_channel(channel_data, secret_key):
         scrambled_data = JS_Scramble.scramble_image(mapping, input_data)
 
         # Chaotic Mapping
+        cm_val = key.generate_chaotic_mapping_values(JPDF_values[f"d{idx}"])
         rimage = row_cm.switch_rows(cm_val["mu"], cm_val["x"], np.array(scrambled_data))
         cimage = col_cm.switch_columns(cm_val["mu"], cm_val["x"], rimage)
         input_data = cimage
@@ -33,13 +30,9 @@ def decryption_channel(channel_data, secret_key):
     JPDF_values = key.generate_JPDF_parameters(secret_key)
     input_data = np.array(channel_data)
 
-    cm_val = { 
-    "x" : 0.19870228,
-    "mu": 3.99999999
-    }
-
     for idx in  range(1, -1, -1):
         # Chaotic Mapping
+        cm_val = key.generate_chaotic_mapping_values(JPDF_values[f"d{idx}"])
         cimage = col_cm.deswitch_columns(cm_val["mu"], cm_val["x"], input_data)
         rimage = row_cm.deswitch_rows(cm_val["mu"], cm_val["x"], cimage)
 
