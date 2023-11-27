@@ -7,6 +7,7 @@ def generate_prime_key_one(k1, k2, k3):
 
 def generate_prime_key_two(k1, k2, k3):
     t = int(k3, 2)
+    # Need to bring the key to the size of k2 or k1
     t_prime = t%120
     k_1 = k1[120-t_prime:] + k1[:120-t_prime]
     key = int(k_1, 2) ^ int(k2, 2) ^ int(k3, 2)
@@ -43,14 +44,14 @@ def generate_chaotic_mapping_values(bin_data):
     fh = bin_data[:48]
     lh = bin_data[48:]
     x = int(fh,2)/(2**48)
-    mu = 3.96+(int(lh,2)%0.04)
-    return { 
-        "x" : 0.19870228,
-        "mu": 3.99999999
+    # to get mu value in the range (3.96, 4]
+    mu = 3.96+(int(lh,2)%0.034)
+    # return { 
+    #     "x" : 0.19870228,
+    #     "mu": 3.99999999
+    # }
+    return {
+        "x": x,
+        "mu": mu
     }
     
-
-# if __name__ == "__main__":
-#     SECRET_KEY = "T3RTqXCNwUaIraqIbixsvzYb1W340ZXK"
-#     res_dict = generate_JPDF_parameters(SECRET_KEY)
-#     print(res_dict)
