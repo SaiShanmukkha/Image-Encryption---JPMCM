@@ -5,8 +5,11 @@ from Lib import JS_Mapping
 from Lib import JS_Scramble
 from Lib import row_cm
 from Lib import col_cm
+import time
 
 def encryption_channel(channel_data, secret_key):
+    
+
     M, N = channel_data.shape
     JPDF_values = key.generate_JPDF_parameters(secret_key)
     input_data = channel_data
@@ -47,14 +50,26 @@ def decryption_channel(channel_data, secret_key):
 def process_color_image(image, secret_key, encryptFlag):   
     image = np.array(image)
     processed_channels = []
-
+    # Measure the start time
+    start_time = time.time()
     for idx in range(3):  # process each channel
         channel_data = image[:, :, idx]
         if encryptFlag:
+            
             processed_channel = encryption_channel(channel_data, secret_key)
         else:
             processed_channel = decryption_channel(channel_data, secret_key)
         processed_channels.append(processed_channel)
+    # Measure the end time
+    end_time = time.time()
+
+    # Calculate encryption speed
+    elapsed_time = end_time - start_time
+    temp1, temp2 = channel_data.shape
+    encryption_speed = (temp1*temp2) / (1024 * 1024) / max(1e-6, elapsed_time)  # Avoid division by zero
+
+    print(f"Elapsed Time: {elapsed_time:.6f} seconds")
+    print(f"Encryption/Decryption Speed: {encryption_speed:.2f} MB/s")
     
     processed_image = np.stack(processed_channels, axis=-1)
     processed_image = Image.fromarray(processed_image.astype(np.uint8), mode="RGB")
@@ -65,7 +80,19 @@ def process_grey_scale(image, secret_key, encryptFlag):
     image = np.array(image)
 
     if encryptFlag:
+        # Measure the start time
+        start_time = time.time()
         processed_image = encryption_channel(image, secret_key)
+        # Measure the end time
+        end_time = time.time()
+
+        # Calculate encryption speed
+        elapsed_time = end_time - start_time
+        temp1, temp2 = image.shape
+        encryption_speed = (temp1*temp2) / (1024 * 1024) / max(1e-6, elapsed_time)  # Avoid division by zero
+
+        print(f"Elapsed Time: {elapsed_time:.6f} seconds")
+        print(f"Encryption Speed: {encryption_speed:.2f} MB/s")
     else:
         processed_image = decryption_channel(image, secret_key)
     
@@ -75,7 +102,7 @@ def process_grey_scale(image, secret_key, encryptFlag):
 
 if __name__ == "__main__":
     secret_key = "T3RTqXCNwUaIraqIbixsvzYb1W340ZXK"
-    image = Image.open("./Images/cmk.jpeg")
+    image = Image.open("./Images/test.jpg")
 
     if image.mode == "L":
         # Encrypt
