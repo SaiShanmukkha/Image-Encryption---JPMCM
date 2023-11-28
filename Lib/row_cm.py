@@ -2,9 +2,11 @@ import math
 import numpy as np
 from PIL import Image
 
+# Function for Logiatic Chaotic Mapping
 def logistic_chaotic_mapping(mu, x):
     return mu * x * (1-x)
 
+# Encrypt - Switching Rows : Confusion & Diffusion
 def deswitch_rows(mu, x, rimage):
     M = len(rimage)
     N = len(rimage[0])
@@ -40,7 +42,7 @@ def deswitch_rows(mu, x, rimage):
         i -= 1 
     return rimage
 
-    
+# Decrypt - Deswitching Rows : Confusion & Diffusion    
 def switch_rows(mu, x, image:np.ndarray):
     M, N = image.shape
 

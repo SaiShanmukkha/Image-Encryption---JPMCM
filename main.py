@@ -7,9 +7,8 @@ from Lib import row_cm
 from Lib import col_cm
 import time
 
+# Main Encryption Function
 def encryption_channel(channel_data, secret_key):
-    
-
     M, N = channel_data.shape
     JPDF_values = key.generate_JPDF_parameters(secret_key)
     input_data = channel_data
@@ -28,6 +27,7 @@ def encryption_channel(channel_data, secret_key):
 
     return input_data
 
+# Main Decryption Function
 def decryption_channel(channel_data, secret_key):
     M, N = channel_data.shape
     JPDF_values = key.generate_JPDF_parameters(secret_key)
@@ -47,6 +47,7 @@ def decryption_channel(channel_data, secret_key):
 
     return input_data
 
+# RGB Image Handler
 def process_color_image(image, secret_key, encryptFlag):   
     image = np.array(image)
     processed_channels = []
@@ -76,6 +77,7 @@ def process_color_image(image, secret_key, encryptFlag):
 
     return processed_image
 
+# Grey Scale Image Handler
 def process_grey_scale(image, secret_key, encryptFlag):
     image = np.array(image)
 
@@ -101,27 +103,36 @@ def process_grey_scale(image, secret_key, encryptFlag):
     return processed_image
 
 if __name__ == "__main__":
+    # #2 Byte or 256 bit Secret Key
     secret_key = "T3RTqXCNwUaIraqIbixsvzYb1W340ZXK"
-    image = Image.open("./Images/test.jpg")
 
+    # Input for Grey Scale
+    image = Image.open("./Images/Input/GreyScale/test.jpg")
+
+    # Input for RGB Image
+    # image = Image.open("./Images/Input/RGB/cmk.jpeg")
+
+    # Grey Scale Image Condition
     if image.mode == "L":
         # Encrypt
         encrypted_image = process_grey_scale(image, secret_key, encryptFlag=True)
-        encrypted_image.save('./Images/eimage.png')
+        encrypted_image.save('./Images/Output/eimage.png')
 
         # Decrypt
         decrypted_image = process_grey_scale(encrypted_image, secret_key, encryptFlag=False)
-        decrypted_image.save('./Images/dimage.png')
-        
+        decrypted_image.save('./Images/Output/dimage.png')
+    
+    # RGB Image Condition
     elif image.mode == "RGB":
         # Encrypt
         encrypted_image = process_color_image(image, secret_key, encryptFlag=True)
-        encrypted_image.save('./Images/eimage.png')     
+        encrypted_image.save('./Images/Output/eimage.png')     
 
         # Decrypt
         decrypted_image = process_color_image(encrypted_image, secret_key, encryptFlag=False)
-        decrypted_image.save('./Images/dimage.png')
+        decrypted_image.save('./Images/Output/dimage.png')
 
+    # Exception For Other types of images
     else:
         raise Exception("Unsupported Image Type.")
 
