@@ -46,6 +46,9 @@ Contributions are welcome! Feel free to fork the repository, make improvements, 
 ## License
 This project is licensed under the [Apache License](LICENSE.md). Feel free to use, modify, and distribute as per the terms of the license.
 
+## Functionalities check
+All the functionalities does work in the final version of the application.
+
 ## Acknowledgments
 - The algorithms implemented in this project are based on the research papers:
   - [Josephus Problem and Filtering Diffusion](https://link.springer.com/article/10.1007/s11071-014-1729-y)
