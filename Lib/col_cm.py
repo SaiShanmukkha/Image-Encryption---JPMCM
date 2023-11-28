@@ -1,9 +1,11 @@
 import math
 import numpy as np
 
+# Function for Logiatic Chaotic Mapping
 def logistic_chaotic_mapping(mu, x):
     return mu * x * (1-x)
-    
+
+# Encrypt - Switching Columns : Confusion & Diffusion
 def switch_columns(mu, x, image:np.ndarray):
     M, N = image.shape
 
@@ -35,6 +37,7 @@ def switch_columns(mu, x, image:np.ndarray):
 
     return image
 
+# Decrypt - Deswitching Columns : Confusion & Diffusion
 def deswitch_columns(mu, x, cimage:np.ndarray):
     M, N = cimage.shape
     
