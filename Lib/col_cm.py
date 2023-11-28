@@ -1,7 +1,7 @@
 import math
 import numpy as np
 
-# Function for Logiatic Chaotic Mapping
+# Function for Logistic Chaotic Mapping
 def logistic_chaotic_mapping(mu, x):
     return mu * x * (1-x)
 
