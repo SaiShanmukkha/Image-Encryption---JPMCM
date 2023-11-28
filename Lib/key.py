@@ -1,3 +1,4 @@
+# K(1) Prime Key from k1, k2 & k3
 def generate_prime_key_one(k1, k2, k3):
     t = int(k3, 2)
     t_prime = t%120
@@ -5,6 +6,7 @@ def generate_prime_key_one(k1, k2, k3):
     key = int(k1, 2) ^ int(k_2, 2) ^ int(k3, 2)
     return bin(key)[2:].zfill(120)
 
+# K(2) Prime Key from k1, k2 & k3
 def generate_prime_key_two(k1, k2, k3):
     t = int(k3, 2)
     # Need to bring the key to the size of k2 or k1
@@ -13,6 +15,7 @@ def generate_prime_key_two(k1, k2, k3):
     key = int(k_1, 2) ^ int(k2, 2) ^ int(k3, 2)
     return bin(key)[2:].zfill(120)
 
+# Generate k1, k2 & k3 from 256 Bit Key
 def generate_values_from_key(SECRET_KEY):
     val_gen = ""
     for char in SECRET_KEY:
@@ -24,6 +27,7 @@ def generate_values_from_key(SECRET_KEY):
     k2_prime = generate_prime_key_two(k1, k2, k3)
     return [k1_prime, k2_prime]
 
+# Generate Parameters from K(1) and K(2)
 def generate_JPDF_parameters(subkey):
     val_list = generate_values_from_key(subkey)
     res = dict()
@@ -32,6 +36,7 @@ def generate_JPDF_parameters(subkey):
         res[f"d{idx}"] = key[24:]
     return res
 
+# Generate Initial Scrambling Values
 def generate_scrambling_values(bin_data, M, N):
     sc_val = dict()
     sc_val["MP"] = (int(bin_data[:8], 2)%M)+1
@@ -39,7 +44,8 @@ def generate_scrambling_values(bin_data, M, N):
     sc_val["MStep"] = int(bin_data[16:20], 2)
     sc_val["NStep"] = int(bin_data[20:], 2)
     return sc_val
-    
+
+# Generate Chaotic Mapping Values
 def generate_chaotic_mapping_values(bin_data):
     fh = bin_data[:48]
     lh = bin_data[48:]
