@@ -37,7 +37,7 @@ Follow these steps to set up and run the project:
 3. **Install Required Dependencies**: Make sure you have Python 3.x installed in the system and run "pip install -r requirements.txt"
 4. **Configure the Script** : Open main.py in a text editor and Change the input image path to your desired file.
 5. **Run the Script** : python main.py
-6. **Navigate to the Images folder**: Find the encrypted image "eimage.png" and decrypted image "dimage.png".
+6. **Navigate to the Images folder**: Find the encrypted image "eimage.png" and decrypted image "dimage.png" in ./Images/Output Folder.
 
 
 ## Contributions

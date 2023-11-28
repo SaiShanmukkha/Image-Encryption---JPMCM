@@ -1,3 +1,4 @@
+# Generate JP Parameters
 def josephus_scrambling_parameters(jkey, M, N):
     MP = (int(jkey[:8], 2)%M) + 1
     NP = (int(jkey[8:16], 2)%N) + 1
@@ -5,6 +6,7 @@ def josephus_scrambling_parameters(jkey, M, N):
     NStep = int(jkey[20:], 2) + 1
     return (MP, NP, MStep, NStep)
 
+# Column Sequence for Mapping
 def JS_generate_column_sequence(M,N, NP, NStep):
     tmp = NP - 1
     ns = NStep
@@ -25,6 +27,7 @@ def JS_generate_column_sequence(M,N, NP, NStep):
         col_lst.append(ci)
     return col_lst
 
+# Row Sequence for Mapping
 def JS_generate_row_sequence(M, MP, MStep):
     a = list(range(M))
     i = MP - 1
@@ -38,6 +41,7 @@ def JS_generate_row_sequence(M, MP, MStep):
         MStep += 1
     return ri
 
+# Mapping Matrix using row & Column Sequences
 def generate_index_matrix(ri, col_lst, M, N):
     mapping = []
     for i in range(M):
@@ -49,7 +53,8 @@ def generate_index_matrix(ri, col_lst, M, N):
             lst.append((l,r))
         mapping.append(lst)
     return mapping
-    
+
+# Mapping Generation
 def generate_mapping(M, N, MP, NP, MStep, NStep):
     ri = JS_generate_row_sequence(M, MP, MStep)
     col_lst = JS_generate_column_sequence(M, N, NP, NStep)

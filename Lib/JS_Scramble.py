@@ -1,3 +1,4 @@
+# Encryption - Making Scrambling of original Image
 def scramble_image(mapping, image):
     M = len(image)
     N = len(image[0])
@@ -8,6 +9,7 @@ def scramble_image(mapping, image):
             mapped_image[i][j] = image[x][y]
     return mapped_image
 
+# Decryption - Reversing the scrambling
 def descramble_image(mapping, image):
     M = len(image)
     N = len(image[0])
