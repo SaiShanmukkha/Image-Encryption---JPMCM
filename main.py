@@ -6,6 +6,21 @@ from Lib import JS_Scramble
 from Lib import row_cm
 from Lib import col_cm
 import time
+import matplotlib.pyplot as plt
+
+def calculate_entropy(data):
+    # Calculate entropy of the data
+    hist, _ = np.histogram(data, bins=256, range=(0, 256), density=True)
+    entropy = -np.sum(hist * np.log2(hist + 1e-10))
+    return entropy
+
+def calculate_histogram(image_data):
+    # Calculate and plot histogram of the image data
+    plt.hist(image_data.flatten(), bins=256, range=(0, 256), density=True, color='gray', alpha=0.7)
+    plt.xlabel('Pixel Intensity')
+    plt.ylabel('Frequency')
+    plt.title('Histogram')
+    plt.show()
 
 def encryption_channel(channel_data, secret_key):
     
@@ -55,11 +70,16 @@ def process_color_image(image, secret_key, encryptFlag):
     for idx in range(3):  # process each channel
         channel_data = image[:, :, idx]
         if encryptFlag:
-            
             processed_channel = encryption_channel(channel_data, secret_key)
         else:
             processed_channel = decryption_channel(channel_data, secret_key)
         processed_channels.append(processed_channel)
+        # Calculate and print entropy
+        entropy = calculate_entropy(processed_channel)
+        print(f"Entropy of Channel {idx}: {entropy:.6f}")
+
+        # Plot histogram
+        calculate_histogram(processed_channel)
     # Measure the end time
     end_time = time.time()
 
@@ -86,6 +106,13 @@ def process_grey_scale(image, secret_key, encryptFlag):
         # Measure the end time
         end_time = time.time()
 
+        # Calculate and print entropy
+        entropy = calculate_entropy(processed_image)
+        print(f"Entropy: {entropy:.6f}")
+
+        # Plot histogram
+        calculate_histogram(processed_image)
+
         # Calculate encryption speed
         elapsed_time = end_time - start_time
         temp1, temp2 = image.shape
@@ -95,14 +122,21 @@ def process_grey_scale(image, secret_key, encryptFlag):
         print(f"Encryption Speed: {encryption_speed:.2f} MB/s")
     else:
         processed_image = decryption_channel(image, secret_key)
-    
+
+        # Calculate and print entropy
+        entropy = calculate_entropy(processed_image)
+        print(f"Entropy: {entropy:.6f}")
+
+        # Plot histogram
+        calculate_histogram(processed_image)
+
     processed_image = Image.fromarray(processed_image.astype(np.uint8), mode="L")
 
     return processed_image
 
 if __name__ == "__main__":
     secret_key = "T3RTqXCNwUaIraqIbixsvzYb1W340ZXK"
-    image = Image.open("./Images/test.jpg")
+    image = Image.open("./Images/cmk.jpeg")
 
     if image.mode == "L":
         # Encrypt
